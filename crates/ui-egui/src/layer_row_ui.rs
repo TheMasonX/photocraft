@@ -155,8 +155,8 @@ pub fn indicators(
                         actions.push(action);
                     }
                 }
-                let resp = resp.on_hover_text(tl!("Unlock layer"));
-                resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, tl!("Unlock layer")));
+                let resp = resp.on_hover_text(tl!("Unlock"));
+                resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, tl!("Unlock")));
             },
             Indicator::Link => icons::paint(ui, Rect::from_center_size(r.center(), vec2(ICON_W, ICON_W)), "link-2", 12.0, t.text_faint),
             Indicator::Fx => {
