@@ -319,6 +319,8 @@ impl Default for Interface {
 #[serde(default, rename_all = "camelCase")]
 pub struct Workspace {
     pub auto_collapse_icon_panels: bool,
+    /// Collapse every layer's effects list when a document is opened.
+    pub collapse_layer_effects_by_default: bool,
     pub auto_show_hidden_panels: bool,
     pub open_documents_as_tabs: bool,
     pub enable_floating_document_window_docking: bool,
@@ -331,6 +333,7 @@ impl Default for Workspace {
     fn default() -> Self {
         Self {
             auto_collapse_icon_panels: false,
+            collapse_layer_effects_by_default: false,
             auto_show_hidden_panels: true,
             open_documents_as_tabs: true,
             enable_floating_document_window_docking: true,

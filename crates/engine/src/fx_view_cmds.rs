@@ -113,6 +113,20 @@ mod tests {
     }
 
     #[test]
+    fn workspace_preference_collapses_effect_lists_when_a_document_is_added() {
+        let (mut s, a, b) = session();
+        s.execute("prefs.set", json!({"path": "workspace.collapseLayerEffectsByDefault", "value": true})).unwrap();
+
+        // Opening a document copies its layer effects into a fresh per-document view state.
+        let doc = (*s.active().unwrap().doc).clone();
+        let index = s.add_document(doc, None);
+        let st = &s.documents()[index];
+        assert_eq!(st.fx_collapsed.len(), 2);
+        assert!(st.fx_collapsed.contains(&LayerId(a)));
+        assert!(st.fx_collapsed.contains(&LayerId(b)));
+    }
+
+    #[test]
     fn bad_params_fail_gracefully() {
         let (mut s, _, _) = session();
         let bg = s.active().unwrap().doc.layers[0].id.0;
