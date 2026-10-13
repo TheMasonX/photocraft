@@ -115,7 +115,11 @@ mod tests {
     #[test]
     fn workspace_preference_collapses_effect_lists_when_a_document_is_added() {
         let (mut s, a, b) = session();
-        s.execute("prefs.set", json!({"path": "workspace.collapseLayerEffectsByDefault", "value": true})).unwrap();
+        s.execute(
+            "prefs.set",
+            json!({"path": "workspace.collapseLayerEffectsByDefault", "value": true}),
+        )
+        .unwrap();
 
         // Opening a document copies its layer effects into a fresh per-document view state.
         let doc = (*s.active().unwrap().doc).clone();

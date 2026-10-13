@@ -542,7 +542,13 @@ impl Session {
         }
         let mut st = DocState::new(doc, path);
         if self.prefs.get().workspace.collapse_layer_effects_by_default {
-            st.fx_collapsed = st.doc.walk().iter().filter(|(_, _, layer)| !layer.effects.items.is_empty()).map(|(_, _, layer)| layer.id).collect();
+            st.fx_collapsed = st
+                .doc
+                .walk()
+                .iter()
+                .filter(|(_, _, layer)| !layer.effects.items.is_empty())
+                .map(|(_, _, layer)| layer.id)
+                .collect();
         }
         st.history.max_states = self.prefs.get().performance.history_states.max(1) as usize;
         st.history.max_bytes = self.prefs.get().performance.history_budget_bytes();
