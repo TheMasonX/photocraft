@@ -2761,7 +2761,9 @@ fn layer_row(
     }
     // Right-hand indicators first; the name gets what is left and ends in "…" (#144).
     let fx_open = app.session.active().is_none_or(|d| !d.fx_collapsed.contains(&l.id));
-    let (name_right, indicators, fx_toggled) = crate::layer_row_ui::indicators(ui, &painter, rect, x, l, fx_open, actions);
+    let lock_action = l.locks.any().then(|| simple_lock_toggle(crate::doc_props_ui::is_background(doc, l), l));
+    let (name_right, indicators, fx_toggled) =
+        crate::layer_row_ui::indicators(ui, &painter, rect, x, l, fx_open, lock_action, actions);
     // Dragging the fx badge drags all the layer's effects, not the layer (Photoshop). Like the eye,
     // it takes the drag from the row; clicks still reach the row.
     if let Some(&(_, badge)) = indicators.iter().find(|(k, _)| *k == crate::layer_row_ui::Indicator::Fx)

@@ -100,8 +100,8 @@ pub fn truncated(painter: &Painter, text: &str, font: FontId, color: egui::Color
     Some(painter.layout_job(job))
 }
 
-/// Paint `l`'s right-hand indicators in `row` and handle the effects triangle. Returns the
-/// name's right limit, the indicator rects, and whether the triangle was clicked this frame (so
+/// Paint `l`'s right-hand indicators in `row` and handle their click targets. Returns the
+/// name's right limit, the indicator rects, and whether an indicator was clicked this frame (so
 /// the row doesn't also treat the click as a selection).
 pub fn indicators(
     ui: &egui::Ui,
@@ -110,6 +110,7 @@ pub fn indicators(
     name_left: f32,
     l: &Layer,
     fx_open: bool,
+    lock_action: Option<(String, Value)>,
     actions: &mut Vec<(String, Value)>,
 ) -> (f32, Vec<(Indicator, Rect)>, bool) {
     let t = Tokens::get(ui.ctx());
@@ -139,7 +140,24 @@ pub fn indicators(
     let cy = row.center().y;
     for &(kind, r) in &rects {
         match kind {
-            Indicator::Lock => icons::paint(ui, Rect::from_center_size(r.center(), vec2(ICON_W, ICON_W)), "lock", 12.0, t.text_faint),
+            Indicator::Lock => {
+                let resp = ui.interact(r, ui.id().with(("layer-lock", l.id.0)), Sense::click());
+                icons::paint(
+                    ui,
+                    Rect::from_center_size(r.center(), vec2(ICON_W, ICON_W)),
+                    "lock",
+                    12.0,
+                    if resp.hovered() { t.text } else { t.text_faint },
+                );
+                if resp.clicked() {
+                    clicked = true;
+                    if let Some(action) = lock_action.clone() {
+                        actions.push(action);
+                    }
+                }
+                let resp = resp.on_hover_text(tl!("Unlock layer"));
+                resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, tl!("Unlock layer")));
+            },
             Indicator::Link => icons::paint(ui, Rect::from_center_size(r.center(), vec2(ICON_W, ICON_W)), "link-2", 12.0, t.text_faint),
             Indicator::Fx => {
                 if let Some(g) = fx_galley.clone() {
