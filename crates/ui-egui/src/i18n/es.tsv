@@ -2822,3 +2822,11 @@ curves	Smooth	Suavizar
 @plural	{n} action|{n} actions	{n} acción|{n} acciones
 	Auto Add/Delete	Añadir/eliminar automáticamente
 	ICO is limited to 256 × 256 pixels	ICO está limitado a 256 × 256 píxeles
+	Eliminate	Eliminar
+	Even Fields	Líneas pares
+	Odd Fields	Líneas impares
+	Create By	Generar mediante
+	Interpolation	Interpolación
+	Duplication	Duplicación
+	Edge Only	Solo borde
+	Overlay Edge	Superponer borde
